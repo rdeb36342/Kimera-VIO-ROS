@@ -1,0 +1,37 @@
+<launch>
+  <!-- Where to find intrinsics, extrinsics, parameters -->
+  <arg name="dataset_name" value="OAKD"/>
+
+  <!-- Set to true when playing rosbags or using sensor data -->
+  <arg name="online" value="true" />  
+
+  <arg name="verbosity"    default="0" />
+  <arg name="viz_type"     default="0" />
+
+  <arg name="log_output" default="true"/>
+  <arg name="log_output_path"
+    default="$(find kimera_vio_ros)/output_logs/$(arg dataset_name)"
+       if="$(arg log_output)"/>
+  <arg name="log_gt_data" default="false"/>
+
+  <!-- Subscribed Topics -->
+  <arg name="left_cam_topic"  value="/stereo_inertial_publisher/left/image_raw"/>
+  <arg name="right_cam_topic" value="/stereo_inertial_publisher/right/image_raw"/>
+  <arg name="imu_topic"       value="/stereo_inertial_publisher/imu"/>
+  <!-- arg name="odometry_ground_truth_topic" default="/uav/gt_pose" -->
+
+  <!-- Loop closure -->
+  <arg name="use_lcd" default="false"/>
+
+  <!-- sim time -->
+  <arg name="should_use_sim_time" value="false"/>
+
+  <!-- Frame IDs for Odometry -->
+  <arg name="world_frame_id"     value="world"/>  
+  <arg name="base_link_frame_id" value="kimera_base_link" />
+  <arg name="map_frame_id"  value="map"/>
+
+  <!-- Launch actual pipeline -->
+  <include file="$(find kimera_vio_ros)/launch/kimera_vio_ros.launch"
+           pass_all_args="true"/>
+</launch>
