@@ -67,6 +67,14 @@ const cv::Mat RosDataProviderInterface::readRosImage(
     LOG_EVERY_N(WARNING, 10) << "Converting image...";
     cv::cvtColor(img_const, converted_img, cv::COLOR_RGB2GRAY);
     return converted_img;
+  } else if (img_msg->encoding == sensor_msgs::image_encodings::BGRA8) {
+    LOG_EVERY_N(WARNING, 10) << "Converting image...";
+    cv::cvtColor(img_const, converted_img, cv::COLOR_BGRA2GRAY);
+    return converted_img;    
+  } else if (img_msg->encoding == sensor_msgs::image_encodings::TYPE_8UC1) {
+    LOG_EVERY_N(WARNING, 10) << "Converting image...";
+    converted_img = img_const;
+    return converted_img; 
   } else {
     CHECK_EQ(cv_ptr->encoding, sensor_msgs::image_encodings::MONO8)
         << "Expected image with MONO8, BGR8, or RGB8 encoding."
