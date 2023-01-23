@@ -1,0 +1,36 @@
+<launch>
+  <!-- Where to find intrinsics, extrinsics, parameters -->
+  <arg name="dataset_name" value="Euroc"/>
+
+  <!-- Set to true when playing rosbags or using sensor data -->
+  <arg name="online" value="true" />  
+  <param name="use_sim_time" value="true"/>
+
+  <arg name="verbosity"    default="0" />
+  <arg name="viz_type"     default="0" />
+
+  <!-- Subscribed Topics -->
+  <arg name="left_cam_topic"  value="/cam0/image_raw"/>
+  <arg name="right_cam_topic" value="/cam1/image_raw"/>
+  <arg name="imu_topic"       value="/imu0"/>
+
+  <!-- Logging output -->
+  <arg name="log_output" default="true"/>
+  <arg name="log_output_path"
+    default="$(find kimera_vio_ros)/output_logs/$(arg dataset_name)"
+       if="$(arg log_output)"/>
+  <!-- Set to true and specify gt_topic if you want to log ground-truth data -->
+  <arg name="log_gt_data" value="false"/>
+  <arg name="gt_topic" value="/leica/position"/>
+  
+
+  <!-- Loop closure -->
+  <arg name="use_lcd" default="false"/>
+
+  <!-- Frame IDs for Odometry -->
+  <arg name="base_link_frame_id" value="kimera_base_link" />
+
+  <!-- Launch actual pipeline -->
+  <include file="$(find kimera_vio_ros)/launch/kimera_vio_ros.launch"
+           pass_all_args="true"/>
+</launch>
